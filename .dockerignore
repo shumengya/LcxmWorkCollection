@@ -1,0 +1,46 @@
+# Python缓存文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# 虚拟环境
+venv/
+env/
+ENV/
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Git文件
+.git/
+.gitignore
+
+# 日志文件
+*.log
+
+# 持久化数据目录（这些会通过volume挂载）
+data/
+static/downloads/
+static/uploads/
+
+# Docker相关文件
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 文档和说明文件
+README.md
+*.md
+
+# 临时文件
+*.tmp
+*.temp 

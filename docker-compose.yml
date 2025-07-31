@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  software-repo:
+    build: .
+    container_name: software-repo-web
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      # 持久化数据目录
+      - ./data:/app/data
+      # 持久化下载文件目录
+      - ./static/downloads:/app/static/downloads
+      # 持久化上传文件目录
+      - ./static/uploads:/app/static/uploads
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+    networks:
+      - software-repo-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  software-repo-network:
+    driver: bridge

@@ -1,0 +1,1585 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site_settings.site_name }}{% endblock %}
+
+{% block head %}
+<style>
+    /* 英雄标题字符彩色样式 */
+    .hero-title-char {
+        display: inline-block;
+        animation: charFloat 3s ease-in-out infinite;
+        animation-delay: calc(var(--char-index) * 0.1s);
+        transition: all 0.3s ease;
+    }
+
+    .hero-title-char:hover {
+        transform: scale(1.2) rotate(5deg);
+        text-shadow: 0 0 20px currentColor;
+    }
+
+    .char-1 { 
+        --char-index: 0; 
+        color: #ff6b6b !important; /* 红色 */
+        text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    }
+    .char-2 { 
+        --char-index: 1; 
+        color: #4ecdc4 !important; /* 青色 */
+        text-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+    }
+    .char-3 { 
+        --char-index: 2; 
+        color: #45b7d1 !important; /* 蓝色 */
+        text-shadow: 0 0 10px rgba(69, 183, 209, 0.5);
+    }
+    .char-4 { 
+        --char-index: 3; 
+        color: #f9ca24 !important; /* 黄色 */
+        text-shadow: 0 0 10px rgba(249, 202, 36, 0.5);
+    }
+    .char-5 { 
+        --char-index: 4; 
+        color: #6c5ce7 !important; /* 紫色 */
+        text-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
+    }
+
+    @keyframes charFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    /* 英雄区域 */
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, var(--tertiary-bg) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-visual {
+        position: relative;
+        z-index: 2;
+    }
+
+    .code-preview {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(20px);
+    }
+
+    .code-glow {
+        background: linear-gradient(45deg, transparent 30%, rgba(99, 102, 241, 0.1) 50%, transparent 70%);
+        animation: code-shimmer 3s linear infinite;
+    }
+
+    @keyframes code-shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .code-line {
+        margin-bottom: 0.5rem;
+        animation: type-in 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    .code-line:nth-child(1) { animation-delay: 0.2s; }
+    .code-line:nth-child(2) { animation-delay: 0.4s; }
+    .code-line:nth-child(3) { animation-delay: 0.6s; }
+    .code-line:nth-child(4) { animation-delay: 0.8s; }
+    .code-line:nth-child(5) { animation-delay: 1.0s; }
+
+    @keyframes type-in {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* 统计数字动画 */
+    .stat-number {
+        text-shadow: 0 0 20px currentColor;
+    }
+
+    /* 精美搜索区域样式 */
+    .search-card {
+        background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(26, 26, 46, 0.8) 100%);
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        border-radius: 20px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 
+                    0 0 0 1px rgba(99, 102, 241, 0.2);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .search-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan), var(--primary-color));
+        animation: searchGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes searchGlow {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+
+    .search-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 
+                    0 0 0 1px rgba(99, 102, 241, 0.3);
+    }
+
+    /* 搜索输入框样式 */
+    .search-box {
+        position: relative;
+    }
+
+    .search-box .form-control {
+        background: rgba(16, 16, 32, 0.8);
+        border: 2px solid var(--border-color);
+        border-radius: 16px;
+        color: var(--text-bright);
+        font-size: 1.1rem;
+        padding: 1rem 1rem 1rem 3.5rem;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-box .form-control:focus {
+        background: rgba(16, 16, 32, 0.9);
+        border-color: var(--accent-green);
+        box-shadow: 0 0 0 0.2rem rgba(150, 206, 180, 0.25), 
+                    0 0 20px rgba(150, 206, 180, 0.2),
+                    inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        color: var(--text-bright);
+    }
+
+    .search-box .form-control::placeholder {
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .search-box i {
+        color: var(--accent-green);
+        font-size: 1.2rem;
+        z-index: 10;
+        transition: all 0.3s ease;
+    }
+
+    .search-box:focus-within i {
+        color: var(--accent-cyan);
+        transform: scale(1.1);
+    }
+
+    /* 下拉选择框样式 */
+    .form-select {
+        background: rgba(16, 16, 32, 0.8);
+        border: 2px solid var(--border-color);
+        border-radius: 16px;
+        color: var(--text-bright);
+        font-size: 1.1rem;
+        padding: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-select:focus {
+        background: rgba(16, 16, 32, 0.9);
+        border-color: var(--accent-cyan);
+        box-shadow: 0 0 0 0.2rem rgba(79, 209, 197, 0.25), 
+                    0 0 20px rgba(79, 209, 197, 0.2),
+                    inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        color: var(--text-bright);
+    }
+
+    .form-select option {
+        background: var(--secondary-bg);
+        color: var(--text-primary);
+    }
+
+    /* 搜索按钮样式 */
+    .search-btn {
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        border: none;
+        border-radius: 16px;
+        color: white;
+        font-weight: bold;
+        padding: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .search-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .search-btn:hover {
+        background: linear-gradient(135deg, #059669, var(--accent-green));
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .search-btn:hover::before {
+        left: 100%;
+    }
+
+    .search-btn:active {
+        transform: translateY(0);
+    }
+    
+    .search-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+    
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        color: white;
+    }
+
+    /* 筛选按钮样式 */
+    .filter-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3);
+        margin: 0 0.25rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .filter-btn:hover {
+        background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        color: white;
+    }
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, var(--accent-green), #059669);
+        box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
+        color: white;
+    }
+
+    .filter-btn.active:hover {
+        background: linear-gradient(135deg, #059669, var(--accent-green));
+        box-shadow: 0 5px 15px rgba(16, 185, 129, 0.5);
+        color: white;
+    }
+
+    /* 排序控件样式 */
+    .sort-controls {
+        text-align: center;
+    }
+    
+    .sort-label {
+        color: var(--text-bright) !important;
+        font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.75rem;
+    }
+    
+    .sort-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+    
+    .sort-btn {
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 0.75rem 1.25rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 120px;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .sort-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .sort-btn:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+    }
+    
+    .sort-btn:hover::before {
+        left: 100%;
+    }
+    
+    .sort-btn.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+    
+    .sort-btn i {
+        font-size: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .sort-buttons {
+            gap: 0.5rem;
+        }
+        
+        .sort-btn {
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+            min-width: 100px;
+        }
+    }
+
+    /* 软件卡片样式 */
+    .software-card {
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        cursor: pointer;
+        border-radius: 20px;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .software-card .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .software-card .software-header {
+        margin-bottom: 0.75rem;
+    }
+
+    .software-card .card-title {
+        font-size: 1.1rem;
+        line-height: 1.3;
+        height: 2.6rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0.5rem;
+    }
+
+    .software-card .card-text {
+        height: 3.6rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        font-size: 0.9rem;
+        line-height: 1.2;
+        margin-bottom: 0.75rem;
+        flex: 1;
+    }
+
+    .software-card .software-tags {
+        height: 2rem;
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+    }
+
+    .software-card .software-stats {
+        margin-top: auto;
+    }
+
+    .software-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        border-color: var(--primary-color);
+    }
+
+    .software-card:hover .card-glow {
+        opacity: 1 !important;
+    }
+
+    .card-glow {
+        background: linear-gradient(45deg, 
+                    rgba(99, 102, 241, 0.1) 0%, 
+                    rgba(139, 92, 246, 0.1) 50%, 
+                    rgba(6, 182, 212, 0.1) 100%);
+        transition: opacity 0.3s ease;
+    }
+
+    .download-section {
+        background: linear-gradient(135deg, var(--secondary-bg), var(--tertiary-bg));
+        border-bottom: 1px solid var(--border-color) !important;
+    }
+
+    .platform-btn {
+        background: rgba(99, 102, 241, 0.1);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+    }
+
+    .platform-btn:hover {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .software-image {
+        overflow: hidden;
+    }
+
+    .software-image:hover .image-overlay {
+        opacity: 1 !important;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+    }
+
+    .image-overlay {
+        transition: all 0.3s ease;
+    }
+
+    /* 平台图标样式 */
+    .platform-icons {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: nowrap;
+    }
+
+    .platform-icons i {
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+
+    .platform-icons i:hover {
+        color: var(--primary-color) !important;
+    }
+
+    /* 特色功能区域 */
+    .features-section {
+        background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--primary-bg) 100%);
+    }
+
+    .feature-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        border-color: var(--primary-color);
+    }
+
+    .feature-icon i {
+        animation: feature-glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes feature-glow {
+        from { 
+            text-shadow: 0 0 20px currentColor; 
+        }
+        to { 
+            text-shadow: 0 0 30px currentColor, 0 0 40px currentColor; 
+        }
+    }
+
+    /* 彩色标签效果 */
+    .badge.bg-info {
+        background: linear-gradient(135deg, var(--accent-color), #0891b2) !important;
+        animation: badge-pulse 2s ease-in-out infinite;
+    }
+
+    .badge.bg-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+        animation: badge-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes badge-pulse {
+        0%, 100% { 
+            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3); 
+        }
+        50% { 
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5); 
+        }
+    }
+
+    /* 空状态样式 */
+    #emptyState {
+        background: var(--glass-bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+    }
+
+    /* 分页导航样式 */
+    .pagination-wrapper {
+        margin: 2rem 0;
+    }
+    
+    .pagination .page-link {
+        background: var(--glass-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 0.75rem 1rem;
+        margin: 0 0.25rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination .page-link:hover {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+    
+    .pagination .page-item.active .page-link {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+    
+    .pagination .page-item.disabled .page-link {
+        background: var(--tertiary-bg);
+        border-color: var(--border-color);
+        color: var(--text-muted);
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* 移动端首页优化 - 紧凑型软件卡片 */
+    @media (max-width: 768px) {
+        .hero-section .display-4 {
+            font-size: 2rem;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-stats {
+            justify-content: center !important;
+            flex-direction: row !important;
+            flex-wrap: wrap;
+            gap: 0.5rem !important;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            min-width: 80px;
+            flex: 1;
+            max-width: 100px;
+            padding: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-item .stat-number {
+            font-size: 1.5rem !important;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-item .stat-label {
+            font-size: 0.75rem !important;
+            line-height: 1.2;
+        }
+        
+        .hero-actions {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-actions .btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-actions .btn:last-child {
+            margin-bottom: 0;
+        }
+        
+        .search-card {
+            margin-bottom: 2rem;
+        }
+        
+        .search-card .row {
+            gap: 0.5rem;
+        }
+        
+        .search-card .col-md-6,
+        .search-card .col-md-3,
+        .search-card .col-md-2,
+        .search-card .col-md-1 {
+            margin-bottom: 0.75rem;
+        }
+        
+        .search-card .col-md-1:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 紧凑型软件卡片设计 */
+        .software-card {
+            margin-bottom: 1rem;
+            border-radius: 12px;
+        }
+        
+        .software-card .download-section {
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--secondary-bg), var(--tertiary-bg));
+        }
+        
+        .download-links {
+            justify-content: flex-start;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        
+        .platform-btn {
+            font-size: 0.9rem;
+            padding: 0.4rem 0.6rem;
+            min-width: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .platform-btn i {
+            margin: 0 !important;
+        }
+        
+        /* 懒加载动画 */
+        .lazy-image {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading-shimmer 1.5s infinite;
+        }
+        
+        @keyframes loading-shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        
+        .software-card .card-body {
+            padding: 0.75rem;
+        }
+        
+        /* 移动端紧凑布局 */
+        .software-header {
+            margin-bottom: 0.5rem;
+        }
+        
+        .software-header h5 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+        }
+        
+        .software-meta {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        
+        .software-meta .badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+        }
+        
+        .software-meta .small {
+            font-size: 0.75rem;
+            margin: 0;
+        }
+        
+        .software-card .card-text {
+            font-size: 0.8rem;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .software-tags {
+            margin-bottom: 0.5rem;
+        }
+        
+        .software-tags .badge {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.3rem;
+            margin-right: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* 底部统计信息横向排列 */
+        .software-stats {
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .stats-left {
+            flex-direction: row !important;
+            gap: 0.75rem !important;
+            font-size: 0.7rem;
+        }
+        
+        .platform-icons {
+            gap: 0.3rem !important;
+        }
+        
+        .platform-icons i {
+            font-size: 1rem;
+        }
+        
+        .software-image img {
+            height: 140px !important;
+        }
+        
+        .code-preview {
+            margin-top: 2rem;
+            padding: 1rem !important;
+        }
+        
+        .code-line {
+            font-size: 0.8rem;
+        }
+        
+        #emptyState {
+            padding: 2rem 1rem !important;
+        }
+        
+        .empty-icon i {
+            font-size: 3rem !important;
+        }
+        
+        .pagination .page-link {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+            border-radius: 6px;
+        }
+        
+        .pagination {
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .pagination .page-item {
+            margin: 0.125rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero-section {
+            padding: 2rem 0 !important;
+        }
+        
+        .hero-content {
+            text-align: center;
+        }
+        
+        /* 移动端标题更大 */
+        .hero-title {
+            font-size: 2.5rem !important;
+        }
+        
+        /* 移动端统计框更小且一行显示 */
+        .hero-stats {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            justify-content: space-between !important;
+            gap: 0.5rem !important;
+            overflow-x: auto !important;
+        }
+        
+        .stat-item {
+            flex: 1 1 auto !important;
+            min-width: 70px !important;
+            text-align: center !important;
+        }
+        
+        .stat-number {
+            font-size: 1.2rem !important;
+        }
+        
+        .stat-label {
+            font-size: 0.7rem !important;
+            line-height: 1.2 !important;
+        }
+        
+        .search-card {
+            padding: 1rem !important;
+        }
+        
+        .software-card .download-section {
+            padding: 0.75rem;
+        }
+        
+        .download-title {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .platform-btn {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.6rem;
+        }
+        
+        .dropdown-menu {
+            font-size: 0.85rem;
+        }
+        
+        .software-image img {
+            height: 150px !important;
+        }
+        
+        .code-preview {
+            display: none;
+        }
+        
+        .section-title {
+            font-size: 1.5rem !important;
+        }
+        
+        .section-subtitle {
+            font-size: 0.95rem;
+        }
+        
+        .pagination .page-link {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.8rem;
+            min-width: 36px;
+            text-align: center;
+        }
+    }
+
+    /* 加载动画 */
+    .software-item {
+        animation: fade-in-up 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .software-item:nth-child(1) { animation-delay: 0.1s; }
+    .software-item:nth-child(2) { animation-delay: 0.2s; }
+    .software-item:nth-child(3) { animation-delay: 0.3s; }
+    .software-item:nth-child(4) { animation-delay: 0.4s; }
+    .software-item:nth-child(5) { animation-delay: 0.5s; }
+    .software-item:nth-child(6) { animation-delay: 0.6s; }
+
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* 手机端搜索区域优化 */
+    .search-card {
+        margin-bottom: 1.5rem;
+        padding: 1rem !important;
+    }
+    
+    .search-card .row {
+        gap: 0.75rem;
+    }
+    
+    .search-card .col-md-6 {
+        margin-bottom: 1rem;
+        order: 1;
+    }
+    
+    .search-card .col-md-3:first-of-type {
+        margin-bottom: 0.75rem;
+        order: 2;
+    }
+    
+    .search-card .col-md-2 {
+        margin-bottom: 0.75rem;
+        order: 3;
+    }
+    
+    .search-card .col-md-1 {
+        margin-bottom: 0;
+        order: 4;
+    }
+    
+    .search-box .form-control {
+        font-size: 16px !important; /* 防止iOS缩放 */
+        padding: 0.9rem 0.9rem 0.9rem 2.8rem !important;
+    }
+    
+    .search-box i {
+        left: 0.9rem !important;
+    }
+    
+    .form-select {
+        font-size: 16px !important;
+        padding: 0.9rem !important;
+    }
+    
+    .search-btn {
+        font-size: 1rem !important;
+        padding: 0.9rem 1rem !important;
+    }
+
+    /* 移动端搜索优化 */
+    @media (max-width: 768px) {
+        .search-card {
+            margin: 0.5rem;
+            padding: 1.5rem !important;
+            border-radius: 16px;
+        }
+
+        .search-box .form-control {
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            font-size: 1rem;
+            border-radius: 12px;
+        }
+        
+        .search-box i {
+            font-size: 1rem;
+            left: 1rem;
+        }
+
+        .form-select {
+            padding: 0.875rem;
+            font-size: 1rem;
+            border-radius: 12px;
+        }
+
+        .search-btn {
+            padding: 0.875rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+        
+        /* 手机端筛选框一行排列 */
+        .search-card .row .col-md-3,
+        .search-card .row .col-md-2 {
+            flex: 1;
+            min-width: 0;
+            margin-bottom: 0.75rem;
+        }
+        
+        .search-card .row:first-child {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .search-card .row:first-child .col-md-6 {
+            flex: 1 1 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .search-card .row:first-child .col-md-3,
+        .search-card .row:first-child .col-md-2 {
+            flex: 1 1 calc(50% - 0.5rem);
+            margin-bottom: 0.75rem;
+        }
+        
+        /* 手机端排序按钮一行排列 */
+        .sort-buttons {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        .sort-btn {
+            flex: 1 1 calc(50% - 0.25rem) !important;
+            min-width: 120px !important;
+            max-width: 150px !important;
+            padding: 0.6rem 0.8rem !important;
+            font-size: 0.8rem !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .search-card {
+            margin: 0.25rem;
+            padding: 1rem !important;
+        }
+
+        .search-box .form-control {
+            font-size: 16px; /* 防止iOS缩放 */
+        }
+
+        .form-select {
+            font-size: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 英雄区域 -->
+<div class="hero-section py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold mb-4 hero-title">
+                        {% for char in (site_settings.site_name or '灵创实验室作品集一览') %}
+                        <span class="hero-title-char char-{{ loop.index0 % 6 + 1 }}">{{ char }}</span>
+                        {% endfor %}<br>
+                        <span class="text-bright"></span>
+                    </h1>
+                    <p class="lead mb-4" style="color: var(--text-primary);">
+                        {{ site_settings.site_slogan }}
+                    </p>
+                    <div class="hero-stats d-flex gap-4 mb-4">
+                        <div class="stat-item">
+                            <div class="stat-number text-primary fw-bold fs-3" data-count="{{ total_software }}">0</div>
+                            <div class="stat-label" style="color: var(--text-secondary);">作品数量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number text-success fw-bold fs-3" data-count="{{ total_software_list|sum(attribute='downloads') or 0 }}">0</div>
+                            <div class="stat-label" style="color: var(--text-secondary);">总下载量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number text-info fw-bold fs-3" data-count="5">0</div>
+                            <div class="stat-label" style="color: var(--text-secondary);">支持平台</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number text-warning fw-bold fs-3" data-count="{{ site_settings.visit_count or 0 }}">0</div>
+                            <div class="stat-label" style="color: var(--text-secondary);">访问人数</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual position-relative">
+                    <div class="code-preview p-4 rounded-4 position-relative overflow-hidden">
+                        <div class="code-header d-flex align-items-center mb-3">
+                            <div class="code-dots d-flex gap-2">
+                                <div class="dot bg-danger rounded-circle" style="width: 12px; height: 12px;"></div>
+                                <div class="dot bg-warning rounded-circle" style="width: 12px; height: 12px;"></div>
+                                <div class="dot bg-success rounded-circle" style="width: 12px; height: 12px;"></div>
+                            </div>
+                            <div class="code-title ms-3" style="color: var(--text-primary);">{{ site_settings.brand_name }}</div>
+                        </div>
+                        <div class="code-content font-monospace small">
+                            <div class="code-line text-primary">
+                                <span class="text-success">const</span> 
+                                <span class="text-warning">platform</span> = 
+                                <span class="text-info">'{{ site_settings.site_name }}'</span>;
+                            </div>
+                            <div class="code-line text-secondary">
+                                <span class="text-success">let</span> 
+                                <span class="text-warning">downloads</span> = 
+                                <span class="text-primary">{{ total_software_list|sum(attribute='downloads') or 0 }}</span>;
+                            </div>
+                            <div class="code-line text-secondary">
+                                <span class="text-success">let</span> 
+                                <span class="text-warning">works</span> = 
+                                <span class="text-primary">{{ total_software }}</span>;
+                            </div>
+                            <div class="code-line text-secondary">
+                                <span class="text-success">let</span> 
+                                <span class="text-warning">VisitorNums</span> = 
+                                <span class="text-primary">{{ site_settings.visit_count or 0 }}</span>;
+                            </div>
+                            <div class="code-line text-accent">
+                                <span class="text-success">function</span> 
+                                <span class="text-warning">deployApp</span>() {
+                            </div>
+                            <div class="code-line text-muted ms-3">
+                                <span class="text-info">console.log</span>(
+                                <span class="text-success">'加载成功!'</span>);
+                            </div>
+                            <div class="code-line text-accent">}</div>
+                        </div>
+                        <div class="code-glow position-absolute top-0 start-0 w-100 h-100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 搜索和筛选区域 -->
+<div class="search-section mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="search-card card p-4">
+                    <form method="GET" action="{{ url_for('index') }}">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="search-box position-relative">
+                                    <input type="text" 
+                                           name="search"
+                                           value="{{ search }}"
+                                           class="form-control form-control-lg ps-5" 
+                                           placeholder="搜索软件名称、开发者或描述...">
+                                    <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3 mb-md-0">
+                                <select name="category" class="form-select form-select-lg">
+                                    <option value="">所有分类</option>
+                                    {% set categories = total_software_list | map(attribute='category') | unique | list %}
+                                    {% for cat in categories %}
+                                    <option value="{{ cat }}" {% if cat == category %}selected{% endif %}>{{ cat }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3 mb-md-0">
+                                <select name="platform" class="form-select form-select-lg">
+                                    <option value="">所有平台</option>
+                                    <option value="Windows" {% if platform == 'Windows' %}selected{% endif %}>Windows</option>
+                                    <option value="macOS" {% if platform == 'macOS' %}selected{% endif %}>macOS</option>
+                                    <option value="Linux" {% if platform == 'Linux' %}selected{% endif %}>Linux</option>
+                                    <option value="Android" {% if platform == 'Android' %}selected{% endif %}>Android</option>
+                                    <option value="iOS" {% if platform == 'iOS' %}selected{% endif %}>iOS</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <!-- 筛选按钮行 -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="sort-controls">
+                                    <div class="sort-label mb-2">
+                                        <i class="fas fa-sort me-2"></i>排序方式
+                                    </div>
+                                    <div class="sort-buttons d-flex flex-wrap justify-content-center gap-2">
+                                        <button type="button" class="sort-btn" data-sort="downloads" onclick="sortBy('downloads')">
+                                            <i class="fas fa-download"></i>
+                                            <span>按下载量</span>
+                                        </button>
+                                        <button type="button" class="sort-btn" data-sort="created_at" onclick="sortBy('created_at')">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>按发布时间</span>
+                                        </button>
+                                        <button type="button" class="sort-btn" data-sort="updated_at" onclick="sortBy('updated_at')">
+                                            <i class="fas fa-clock"></i>
+                                            <span>按更新时间</span>
+                                        </button>
+                                        <button type="button" class="sort-btn" data-sort="platforms" onclick="sortBy('platforms')">
+                                            <i class="fas fa-layer-group"></i>
+                                            <span>按平台数</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 软件列表 -->
+<div id="software-list" class="software-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-header text-center mb-5">
+                    <h2 class="section-title">
+                        <span class="text-rainbow">{{ site_settings.featured_title or '精选作品' }}</span>
+                        <span class="glow-effect text-bright">推荐</span>
+                    </h2>
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" id="softwareGrid">
+            {% for software in software_list %}
+            <div class="col-lg-4 col-md-6 mb-4 software-item" 
+                 data-category="{{ software.category }}" 
+                 data-platforms="{{ software.platforms|join(',') }}"
+                 data-name="{{ software.name|lower }}"
+                 data-developer="{{ software.developer|lower }}"
+                 data-description="{{ software.description|lower }}">
+                
+                <div class="software-card card h-100 position-relative overflow-hidden" onclick="window.location.href='{{ url_for('software_detail', software_id=software.id) }}'">
+                    <!-- 下载状态显示 -->
+                    <div class="download-section p-2 border-bottom text-center" style="background: var(--bg-glass);">
+                        {% if software.download_disabled %}
+                        <div style="color: var(--danger-color); font-weight: bold;">
+                            <i class="fas fa-ban me-2"></i>
+                            <span>暂时禁用下载</span>
+                        </div>
+                        {% else %}
+                        <div style="color: #28a745; font-weight: bold;">
+                            <i class="fas fa-download me-2"></i>
+                            <span>点击下载</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- 软件图片 -->
+                    {% if software.images %}
+                    <div class="software-image position-relative">
+                        <img src="{{ url_for('static', filename=software.cover_image) if software.cover_image else url_for('static', filename=software.images[0]) }}" 
+                             class="card-img-top lazy-image" 
+                             alt="{{ software.name }}"
+                             style="height: 200px; object-fit: cover; opacity: 0; transition: opacity 0.3s ease;"
+                             loading="lazy"
+                             onload="this.style.opacity=1">
+                        <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center opacity-0">
+                            <div class="btn btn-primary btn-lg">
+                                <i class="fas fa-eye me-2"></i>查看详情
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <div class="software-header mb-3">
+                            <h5 class="card-title text-bright mb-2">
+                                {{ software.name }}
+                            </h5>
+                            <div class="software-meta d-flex align-items-center gap-3 flex-wrap">
+                                <span class="badge bg-primary">{{ software.version }}</span>
+                                {% if software.game_id %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-gamepad me-1"></i>{{ software.game_id }}
+                                </span>
+                                {% endif %}
+                                <span class="small" style="color: var(--text-secondary);">
+                                    <i class="fas fa-user me-1"></i>{{ software.developer }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <p class="card-text mb-3" style="color: var(--text-primary);">
+                            {{ software.description }}
+                        </p>
+
+                        <div class="software-tags mb-3">
+                            {% for tag in software.tags[:3] %}
+                            <span class="badge bg-info me-1 mb-1">{{ tag }}</span>
+                            {% endfor %}
+                            {% if software.tags|length > 3 %}
+                            <span class="badge bg-secondary">+{{ software.tags|length - 3 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="software-stats d-flex justify-content-between align-items-center">
+                            <div class="stats-left d-flex align-items-center gap-3">
+                                <span class="small" style="color: var(--text-secondary);">
+                                    <i class="fas fa-download me-1 text-success"></i>
+                                    {{ software.downloads or 0 }}
+                                </span>
+                                <span class="small" style="color: var(--text-secondary);">
+                                    <i class="fas fa-calendar me-1 text-info"></i>
+                                    {{ software.updated_at[:10] }}
+                                </span>
+                            </div>
+                            <div class="platform-icons d-flex gap-1">
+                                {% for platform in software.platforms %}
+                                <i class="fab fa-{{ 'windows' if platform == 'Windows' else ('apple' if platform == 'macOS' else ('linux' if platform == 'Linux' else ('android' if platform == 'Android' else 'app-store-ios'))) }}" 
+                                   title="{{ platform }}"
+                                   data-bs-toggle="tooltip"
+                                   style="color: var(--text-secondary);"></i>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 卡片发光效果 -->
+                    <div class="card-glow position-absolute top-0 start-0 w-100 h-100 opacity-0"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- 空状态 -->
+        <div id="emptyState" class="text-center py-5" style="display: {% if software_list|length == 0 %}block{% else %}none{% endif %};">
+            <div class="empty-icon mb-3">
+                <i class="fas fa-search text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
+            </div>
+            <h3 style="color: var(--text-primary);">未找到相关软件</h3>
+            <p style="color: var(--text-secondary);">请尝试调整搜索条件或筛选选项</p>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                <i class="fas fa-refresh me-2"></i>清除筛选
+            </a>
+        </div>
+        
+        <!-- 分页导航 -->
+        {% if total_pages > 1 %}
+        <div class="pagination-wrapper d-flex justify-content-center mt-4">
+            <nav aria-label="软件列表分页">
+                <ul class="pagination">
+                    <!-- 上一页 -->
+                    {% if has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('index', page=prev_page, search=search, category=category, platform=platform) }}" aria-label="上一页">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-label="上一页">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- 页码 -->
+                    {% set start_page = [1, current_page - 2]|max %}
+                    {% set end_page = [total_pages, current_page + 2]|min %}
+                    
+                    {% if start_page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('index', page=1, search=search, category=category, platform=platform) }}">1</a>
+                    </li>
+                    {% if start_page > 2 %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                    
+                    {% for page_num in range(start_page, end_page + 1) %}
+                    <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('index', page=page_num, search=search, category=category, platform=platform) }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                    
+                    {% if end_page < total_pages %}
+                    {% if end_page < total_pages - 1 %}
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('index', page=total_pages, search=search, category=category, platform=platform) }}">{{ total_pages }}</a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- 下一页 -->
+                    {% if has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('index', page=next_page, search=search, category=category, platform=platform) }}" aria-label="下一页">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link" aria-label="下一页">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- 分页信息 -->
+        <div class="text-center mt-3">
+            <small style="color: var(--text-secondary);">
+                显示第 {{ current_page }} 页，共 {{ total_pages }} 页 | 共 {{ filtered_total }} 个软件
+            </small>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 数字动画计数器
+    function animateNumbers() {
+        const numbers = document.querySelectorAll('.stat-number[data-count]');
+        numbers.forEach(number => {
+            const target = parseInt(number.getAttribute('data-count'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                number.textContent = Math.floor(current).toLocaleString();
+            }, 16);
+        });
+    }
+    
+    // 延迟执行数字动画
+    setTimeout(animateNumbers, 500);
+    
+    // 平滑滚动到软件列表
+    document.querySelectorAll('a[href="#software-list"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('software-list').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+    
+    // 下载按钮点击效果
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(99, 102, 241, 0.3);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            `;
+            
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            
+            this.style.position = 'relative';
+            this.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+    
+    // 添加波纹动画CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+});
+
+// 排序功能
+function sortBy(sortType) {
+    // 移除所有按钮的active类
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // 为当前按钮添加active类
+    const clickedBtn = document.querySelector(`[data-sort="${sortType}"]`);
+    if (clickedBtn) {
+        clickedBtn.classList.add('active');
+    }
+    
+    // 获取当前URL参数
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('sort', sortType);
+    urlParams.set('page', '1'); // 重置到第一页
+    
+    // 重新加载页面
+    window.location.search = urlParams.toString();
+}
+
+// 页面加载时设置active状态
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentSort = urlParams.get('sort') || 'updated_at'; // 默认按更新时间排序
+    
+    // 为当前排序按钮添加active类
+    const activeBtn = document.querySelector(`[data-sort="${currentSort}"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+});
+</script>
+{% endblock %}

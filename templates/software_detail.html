@@ -1,0 +1,2054 @@
+{% extends "base.html" %}
+
+{% block title %}{{ software.name }} - {{ site_settings.site_name }}{% endblock %}
+
+{% block head %}
+<style>
+    /* 软件详情页面样式 - 蓝紫色主题 */
+    .software-header {
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .software-info {
+        position: relative;
+        z-index: 2;
+    }
+
+    .software-header {
+        margin-bottom: 2rem;
+    }
+    
+    .software-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 
+                     0 0 20px rgba(79, 209, 197, 0.4), 
+                     0 0 30px rgba(150, 206, 180, 0.3);
+        animation: title-glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes title-glow {
+        from { 
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 
+                         0 0 20px rgba(79, 209, 197, 0.4), 
+                         0 0 30px rgba(150, 206, 180, 0.3);
+        }
+        to { 
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 
+                         0 0 25px rgba(79, 209, 197, 0.6), 
+                         0 0 35px rgba(150, 206, 180, 0.5),
+                         0 0 45px rgba(255, 107, 53, 0.3);
+        }
+    }
+
+    /* 每个字不同颜色并添加发光效果 */
+    .software-title .char-1 { 
+        color: #ff6b6b; 
+        text-shadow: 0 0 8px #ff6b6b, 0 0 15px rgba(255, 107, 107, 0.5);
+    }
+    .software-title .char-2 { 
+        color: #4ecdc4; 
+        text-shadow: 0 0 8px #4ecdc4, 0 0 15px rgba(78, 205, 196, 0.5);
+    }
+    .software-title .char-3 { 
+        color: #45b7d1; 
+        text-shadow: 0 0 8px #45b7d1, 0 0 15px rgba(69, 183, 209, 0.5);
+    }
+    .software-title .char-4 { 
+        color: #96ceb4; 
+        text-shadow: 0 0 8px #96ceb4, 0 0 15px rgba(150, 206, 180, 0.5);
+    }
+    .software-title .char-5 { 
+        color: #feca57; 
+        text-shadow: 0 0 8px #feca57, 0 0 15px rgba(254, 202, 87, 0.5);
+    }
+    .software-title .char-6 { 
+        color: #ff9ff3; 
+        text-shadow: 0 0 8px #ff9ff3, 0 0 15px rgba(255, 159, 243, 0.5);
+    }
+
+    .version-developer-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .text-rainbow {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: rainbow 3s ease-in-out infinite;
+    }
+
+    @keyframes rainbow {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .glow-effect {
+        text-shadow: 0 0 20px var(--glow-primary);
+        animation: glow-pulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow-pulse {
+        from { text-shadow: 0 0 20px var(--glow-primary); }
+        to { text-shadow: 0 0 30px var(--glow-primary), 0 0 40px var(--glow-secondary); }
+    }
+
+    .software-version {
+        font-size: 0.9rem;
+        color: var(--accent-cyan);
+        font-family: 'Consolas', monospace;
+        font-weight: bold;
+        padding: 0.3rem 0.8rem;
+        background: rgba(79, 209, 197, 0.1);
+        border: 2px solid var(--accent-cyan);
+        border-radius: 8px;
+        display: inline-block;
+        box-shadow: 0 0 10px rgba(79, 209, 197, 0.3);
+    }
+
+    .developer-info {
+        font-size: 1.1rem;
+        color: var(--text-bright);
+        padding: 0.5rem 1rem;
+        background: rgba(150, 206, 180, 0.1);
+        border: 2px solid var(--accent-green);
+        border-radius: 8px;
+        display: inline-block;
+        box-shadow: 0 0 10px rgba(150, 206, 180, 0.3);
+    }
+
+    .developer-info::before {
+        content: '👨‍💻 ';
+        margin-right: 0.3rem;
+    }
+
+    /* 快速下载区域 - 提前到顶部 */
+    .quick-download-section {
+        background: var(--bg-secondary);
+        border: 2px solid var(--accent-green);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .quick-download-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-primary);
+        animation: loading-bar 2s ease-in-out infinite;
+    }
+
+    .download-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent-green);
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .download-title::before {
+        content: '⚡ ';
+        font-size: 1.8rem;
+    }
+
+    .platform-downloads {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .platform-card {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .platform-card:hover {
+        border-color: var(--accent-green);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .platform-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--text-primary);
+    }
+
+    .platform-header i {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+        color: var(--accent-cyan);
+    }
+
+    .platform-size {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+        font-family: 'Consolas', monospace;
+    }
+
+    .download-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .download-btn {
+        background: transparent;
+        border: 2px solid var(--accent-green);
+        color: var(--accent-green);
+        padding: 0.75rem 1.5rem;
+        border-radius: 0;
+        font-family: inherit;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .download-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--accent-green);
+        transition: all 0.3s ease;
+        z-index: -1;
+    }
+
+    .download-btn:hover {
+        color: var(--bg-primary);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .download-btn:hover::before {
+        left: 0;
+    }
+
+    .download-btn i {
+        margin-right: 0.5rem;
+    }
+
+    .download-btn.secondary {
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+    }
+
+    .download-btn.secondary::before {
+        background: var(--accent-cyan);
+    }
+
+    .download-btn-display {
+        background: transparent;
+        border: 2px solid var(--accent-green);
+        color: var(--accent-green);
+        padding: 0.75rem 1.5rem;
+        border-radius: 0;
+        font-family: inherit;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .download-btn-display::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--accent-green);
+        transition: all 0.3s ease;
+        z-index: -1;
+    }
+
+    .platform-card:hover .download-btn-display {
+        color: var(--bg-primary);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .platform-card:hover .download-btn-display::before {
+        left: 0;
+    }
+
+    .download-btn-display i {
+        margin-right: 0.5rem;
+    }
+
+    .download-btn-display:nth-child(n+2) {
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+    }
+
+    .download-btn-display:nth-child(n+2)::before {
+        background: var(--accent-cyan);
+    }
+
+    /* 统计信息 */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.75rem 0.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        min-height: auto;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--gradient-primary);
+        opacity: 0.6;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-green);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--accent-green);
+        margin-bottom: 0.25rem;
+        font-family: 'Consolas', monospace;
+        line-height: 1;
+    }
+
+    .stat-label {
+        color: var(--text-bright);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        line-height: 1.2;
+    }
+
+    /* 媒体画廊 */
+    .media-gallery {
+        margin-bottom: 3rem;
+    }
+
+    .gallery-title {
+        color: var(--text-primary);
+        font-weight: bold;
+        margin-bottom: 2rem;
+        font-size: 1.3rem;
+    }
+
+    .gallery-title::before {
+        content: '# ';
+        color: var(--accent-green);
+    }
+
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .media-item {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: var(--bg-secondary);
+    }
+
+    .media-item:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-green);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .media-item img,
+    .media-item video {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: all 0.3s ease;
+    }
+
+    .media-item:hover img {
+        transform: scale(1.05);
+    }
+
+    .video-item {
+        cursor: pointer;
+        position: relative;
+    }
+
+    .video-item::after {
+        content: '';
+    }
+
+    .video-overlay {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .video-overlay i {
+        font-size: 3rem;
+        color: var(--accent-green);
+        filter: drop-shadow(0 0 15px var(--accent-green));
+    }
+
+    .video-hint {
+        color: white;
+        font-size: 0.9rem;
+        text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        background: rgba(0,0,0,0.6);
+        padding: 5px 10px;
+        border-radius: 15px;
+        border: 1px solid var(--accent-green);
+    }
+
+    .video-item:hover video {
+        transform: none;
+    }
+
+    .video-item video {
+        background: #000;
+    }
+
+    .video-item video::-webkit-media-controls-panel {
+        background-color: rgba(0,0,0,0.8);
+    }
+
+    /* 视频流式播放增强样式 */
+    .video-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: var(--accent-green);
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--accent-green);
+    }
+
+    .loading-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid transparent;
+        border-top: 2px solid var(--accent-green);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .video-quality-selector {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 0.25rem;
+        z-index: 10;
+    }
+
+    .quality-btn {
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid var(--accent-cyan);
+        color: var(--accent-cyan);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .quality-btn:hover,
+    .quality-btn.active {
+        background: var(--accent-cyan);
+        color: var(--bg-primary);
+    }
+
+    /* 视频缓冲进度条 */
+    .video-buffer-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: rgba(150, 206, 180, 0.3);
+        width: 0%;
+        transition: width 0.3s ease;
+        z-index: 5;
+    }
+
+    /* 视频播放状态增强 */
+    .video-item.playing .media-overlay {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .video-item.loading .video-loading {
+        display: flex !important;
+    }
+
+    /* 视频控制栏自定义 */
+    .video-item video::-webkit-media-controls {
+        filter: brightness(1.2) contrast(1.1);
+    }
+
+    .video-item video::-webkit-media-controls-play-button {
+        background-color: var(--accent-green);
+        border-radius: 50%;
+    }
+
+    .media-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    .media-item:hover .media-overlay {
+        opacity: 1;
+    }
+
+    .media-overlay i {
+        font-size: 2.5rem;
+        color: var(--accent-green);
+        filter: drop-shadow(0 0 10px var(--accent-green));
+        animation: zoom-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes zoom-pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .media-item {
+        cursor: zoom-in;
+    }
+
+    .media-item::after {
+        content: '点击放大';
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: var(--accent-green);
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    .media-item:hover::after {
+        opacity: 1;
+    }
+
+    .media-item:hover::after {
+        opacity: 1;
+    }
+
+    /* 图片模态框 */
+    .image-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .image-modal.active {
+        display: flex !important;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .modal-content {
+        position: relative;
+        max-width: 95%;
+        max-height: 95%;
+        border-radius: 16px;
+        overflow: hidden;
+        transform: scale(0.7) rotateY(90deg);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border: 3px solid var(--accent-green);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 
+                    0 0 40px rgba(150, 206, 180, 0.4);
+    }
+
+    .image-modal.active .modal-content {
+        transform: scale(1) rotateY(0deg);
+    }
+
+    .modal-content img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        max-height: 90vh;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid var(--accent-green);
+        color: var(--accent-green);
+        font-size: 1.8rem;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .modal-close:hover {
+        background: var(--accent-green);
+        color: var(--bg-primary);
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 0 20px var(--accent-green);
+    }
+
+    /* 图片导航提示 */
+    .modal-nav-hint {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: var(--accent-green);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--accent-green);
+    }
+
+    /* 信息卡片 */
+    .info-card {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+        position: relative;
+        height: auto;
+        min-height: 150px;
+    }
+
+    /* 桌面端信息卡片对齐优化 */
+    @media (min-width: 992px) {
+        .info-cards-container .row {
+            display: flex;
+            align-items: stretch;
+        }
+        
+        .info-cards-container .col-lg-6 {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-cards-container .info-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+        
+        .info-cards-container .info-card p {
+            flex: 1;
+        }
+    }
+
+    .info-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--gradient-primary);
+        opacity: 0.6;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-green);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .info-card h5 {
+        color: var(--text-primary);
+        font-weight: bold;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+
+    .info-card h5::before {
+        content: '$ ';
+        color: var(--accent-cyan);
+    }
+
+    .info-card p {
+        color: var(--text-primary);
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    /* 标签 */
+    .tags-container {
+        margin-bottom: 1rem;
+    }
+
+    .tag {
+        display: inline-block;
+        background: rgba(0, 255, 65, 0.2);
+        color: var(--accent-green);
+        border: 1px solid var(--accent-green);
+        padding: 0.25rem 0.75rem;
+        border-radius: 0;
+        margin: 0.25rem;
+        font-size: 0.8rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .tag:hover {
+        background: var(--accent-green);
+        color: var(--bg-primary);
+        transform: translateY(-2px);
+    }
+
+    .platform-badge {
+        background: rgba(0, 255, 255, 0.2);
+        color: var(--accent-cyan);
+        border: 1px solid var(--accent-cyan);
+        padding: 0.25rem 0.75rem;
+        border-radius: 0;
+        margin-right: 0.5rem;
+        margin-bottom: 0.25rem;
+        font-size: 0.8rem;
+        font-family: inherit;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .category-badge {
+        background: rgba(255, 107, 53, 0.2);
+        color: var(--accent-orange);
+        border: 1px solid var(--accent-orange);
+        padding: 0.25rem 0.75rem;
+        border-radius: 0;
+        font-size: 0.8rem;
+        font-family: inherit;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* 返回按钮 */
+    .back-btn {
+        position: fixed;
+        top: 120px;
+        left: 2rem;
+        background: var(--bg-glass);
+        border: 2px solid var(--accent-green);
+        color: var(--accent-green);
+        border-radius: 0;
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        backdrop-filter: blur(20px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+    .back-btn:hover {
+        background: var(--accent-green);
+        color: var(--bg-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-glow);
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+        .software-title {
+            font-size: 2rem;
+        }
+        
+        .version-developer-row {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .software-version {
+            font-size: 1rem;
+            padding: 0.4rem 0.8rem;
+        }
+        
+        .developer-info {
+            font-size: 1rem;
+            padding: 0.4rem 0.8rem;
+        }
+        .detail-container {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+
+        .software-title {
+            font-size: 2rem;
+        }
+
+        .software-version {
+            font-size: 1rem;
+        }
+
+        .platform-downloads {
+            grid-template-columns: 1fr;
+        }
+
+        .media-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .media-item img,
+        .media-item video {
+            height: 150px;
+        }
+
+        .back-btn {
+            top: 100px;
+            left: 1rem;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .download-options {
+            gap: 0.5rem;
+        }
+
+        .download-btn {
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .detail-container {
+            padding: 1rem;
+            margin: 0.5rem;
+        }
+
+        .software-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .quick-download-section {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            padding: 1rem;
+        }
+
+        .info-card {
+            padding: 1rem;
+        }
+    }
+
+    /* 平板端优化 */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .platform-downloads {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .media-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* 移动端详情页优化 */
+    @media (max-width: 768px) {
+        .detail-container {
+            padding: 1rem;
+            margin: 0.5rem;
+        }
+
+        .software-title {
+            font-size: 1.8rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .software-version {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .developer-info {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quick-download-section {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .download-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .platform-downloads {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .platform-card {
+            padding: 1rem;
+        }
+        
+        .platform-header {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .platform-size {
+            font-size: 0.8rem;
+        }
+        
+        .download-options {
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .download-btn {
+            font-size: 0.8rem;
+            padding: 0.6rem 1rem;
+            min-width: 100px;
+        }
+
+        .game-id-info {
+            padding: 0.75rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .game-id-info div[style*="font-size: 0.9rem"] {
+            font-size: 0.8rem !important;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            padding: 0.5rem 0.25rem;
+        }
+        
+        .stat-value {
+            font-size: 1rem;
+        }
+        
+        .stat-label {
+            font-size: 0.65rem;
+        }
+
+        .media-gallery {
+            margin-bottom: 1.5rem;
+        }
+        
+        .gallery-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .media-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .media-item img,
+        .media-item video {
+            height: 120px;
+        }
+
+        .info-card {
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .info-card h5 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .info-card p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .back-btn {
+            top: 85px;
+            left: 0.5rem;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+        
+        .category-badge,
+        .platform-badge,
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            margin: 0.2rem;
+        }
+        
+        .tags-container {
+            margin-top: 0.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .detail-container {
+            padding: 0.75rem;
+            margin: 0.25rem;
+        }
+
+        .software-header {
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+        }
+        
+        .software-title {
+            font-size: 1.5rem;
+        }
+        
+        .software-version {
+            font-size: 0.9rem;
+        }
+
+        .quick-download-section {
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .download-title {
+            font-size: 1rem;
+        }
+        
+        .platform-card {
+            padding: 0.75rem;
+        }
+        
+        .download-btn {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        
+        .download-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card {
+            padding: 0.4rem 0.2rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 0.9rem;
+        }
+        
+        .stat-label {
+            font-size: 0.6rem;
+        }
+
+        .media-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .media-item img,
+        .media-item video {
+            height: 180px;
+        }
+        
+        .info-card {
+            padding: 0.75rem;
+        }
+        
+        .back-btn {
+            top: 80px;
+            left: 0.25rem;
+            width: 36px;
+            height: 36px;
+            font-size: 0.9rem;
+        }
+        
+        .game-id-info {
+            padding: 0.5rem !important;
+        }
+        
+        .game-id-info div[style*="margin-bottom: 0.25rem"] {
+            margin-bottom: 0.5rem !important;
+            word-break: break-all;
+        }
+        
+        .game-id-info strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .game-id-info a {
+            display: block;
+            font-size: 0.75rem !important;
+            line-height: 1.3;
+        }
+    }
+
+    /* 平板端优化 */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .platform-downloads {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .media-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .detail-container {
+            padding: 2rem;
+        }
+    }
+    
+    /* 横屏模式优化 */
+    @media (max-width: 896px) and (max-height: 500px) and (orientation: landscape) {
+        .software-header {
+            padding: 1rem 0;
+        }
+        
+        .software-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-download-section {
+            padding: 1rem;
+        }
+        
+        .platform-downloads {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .back-btn {
+            top: 70px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 返回按钮 -->
+<button class="back-btn" onclick="history.back()">
+    <i class="fas fa-arrow-left"></i>
+</button>
+
+<div class="container">
+    <div class="detail-container glass-card">
+        <!-- 软件头部信息 -->
+        <div class="software-header text-center">
+            <h1 class="software-title mb-3">
+                {% set name_chars = software.name|list %}
+                {% for char in name_chars %}
+                    <span class="char-{{ loop.index0 % 6 + 1 }}">{{ char }}</span>
+                {% endfor %}
+            </h1>
+            <div class="version-developer-row">
+                <div class="software-version">v{{ software.version }}</div>
+                <div class="developer-info">{{ software.developer }}</div>
+            </div>
+        </div>
+
+        <!-- 快速下载区域 - 提前到顶部 -->
+        {% if not software.download_disabled %}
+        <div class="quick-download-section">
+            
+            {% if software.game_id %}
+            <div class="game-id-info" style="background: var(--bg-glass); border: 1px solid var(--accent-cyan); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                <div style="color: var(--accent-cyan); font-weight: bold; margin-bottom: 0.5rem;">
+                    <i class="fas fa-gamepad me-1"></i>作品下载链接
+                </div>
+                <div style="font-family: 'Consolas', monospace; color: var(--text-primary); font-size: 0.9rem;">
+                    {% for platform in software.platforms %}
+                        <div style="margin-bottom: 0.25rem;">
+                            <strong>{{ platform }}:</strong> 
+                            <a href="{{ base_url }}/download/{{ software.game_id }}/{{ platform.lower() }}" 
+                               style="color: var(--accent-green); text-decoration: none;"
+                               onmouseover="this.style.textDecoration='underline'"
+                               onmouseout="this.style.textDecoration='none'">
+                               {{ base_url }}/download/{{ software.game_id }}/{{ platform.lower() }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            </div>
+            {% endif %}
+            
+            <div class="platform-downloads">
+                {% for platform in software.platforms %}
+                    {% if software.download_links.get(platform) %}
+                        {% set local_url = software.download_links[platform].get('local') %}
+                        {% if local_url %}
+                        <a href="{{ url_for('download_thanks', software_id=software.id, platform=platform) }}" class="platform-card">
+                        {% else %}
+                            {% set first_link = software.download_links[platform].values() | list | first %}
+                            {% set first_type = software.download_links[platform].keys() | list | first %}
+                        <a href="{{ url_for('download_software', software_id=software.id, platform=platform, download_type=first_type) }}" class="platform-card" target="_blank">
+                        {% endif %}
+                            <div class="platform-header">
+                                <i class="fab fa-{{ platform.lower() }}"></i>
+                                {{ platform }}
+                                {% if software.file_sizes and software.file_sizes.get(platform) %}
+                                    <span class="platform-size">({{ software.file_sizes[platform] }})</span>
+                                {% endif %}
+                            </div>
+                            <div class="download-options">
+                                {% for link_type, url in software.download_links[platform].items() %}
+                                    <div class="download-btn-display">
+                                        {% if link_type == 'local' %}
+                                            <i class="fas fa-server"></i>本地下载
+                                        {% elif link_type == 'quark' %}
+                                            <i class="fas fa-cloud"></i>夸克网盘
+                                        {% elif link_type == 'baidu' %}
+                                            <i class="fas fa-cloud"></i>百度网盘
+                                        {% elif link_type == 'pan123' %}
+                                            <i class="fas fa-cloud"></i>123网盘
+                                        {% else %}
+                                            <i class="fas fa-external-link-alt"></i>其他下载
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+
+        </div>
+        {% else %}
+        <div class="quick-download-section" style="text-align: center; padding: 2rem; background: var(--bg-glass); border: 1px solid var(--border-color); border-radius: 8px;">
+            <div style="color: var(--text-secondary); font-size: 1.2rem;">
+                <i class="fas fa-ban" style="color: var(--danger-color); margin-right: 0.5rem;"></i>
+                该作品暂时禁用下载
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                请联系管理员或稍后再试
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 统计信息 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ software.downloads }}</div>
+                <div class="stat-label">下载次数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ software.platforms|length }}</div>
+                <div class="stat-label">支持平台</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ software.images|length }}</div>
+                <div class="stat-label">作品截图</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ software.version }}</div>
+                <div class="stat-label">当前版本</div>
+            </div>
+        </div>
+
+        <!-- 图片/视频展示 -->
+        {% if software.images or software.video %}
+        <div class="media-gallery">
+            <h5 class="gallery-title">{{ site_settings.gallery_title }}</h5>
+            <div class="media-grid">
+                {% if software.video %}
+                    <div class="media-item video-item">
+                        <video 
+                            id="streamVideo" 
+                            controls 
+                            autoplay 
+                            preload="auto" 
+                            poster="{{ url_for('static', filename=software.cover_image) if software.cover_image else (url_for('static', filename=software.images[0]) if software.images else '') }}"
+                            data-software-id="{{ software.id }}"
+                            crossorigin="anonymous">
+                            <source src="{{ url_for('stream_video', software_id=software.id) }}" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="media-overlay video-overlay">
+                            <i class="fas fa-play-circle"></i>
+                            <span class="video-hint">点击播放高清视频</span>
+                        </div>
+                        <!-- 视频加载状态指示器 -->
+                        <div class="video-loading" id="videoLoading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            <span>正在加载视频...</span>
+                        </div>
+                        <!-- 视频质量选择器 -->
+                        <div class="video-quality-selector" id="qualitySelector" style="display: none;">
+                            <button class="quality-btn" data-quality="auto">自动</button>
+                            <button class="quality-btn" data-quality="720p">720P</button>
+                            <button class="quality-btn" data-quality="480p">480P</button>
+                        </div>
+                    </div>
+                {% endif %}
+                {% for image in software.images %}
+                    {% if image and image.strip() %}
+                    <div class="media-item image-item" onclick="openImageModal('{{ url_for('static', filename=image) }}', '{{ software.name }} 截图 {{ loop.index }}')">
+                        <img src="{{ url_for('static', filename=image) }}" 
+                             alt="{{ software.name }} 截图 {{ loop.index }}"
+                             data-image-zoom>
+                        <div class="media-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row info-cards-container">
+            <!-- 左侧信息 -->
+            <div class="col-lg-6">
+                <!-- 作品描述 -->
+                <div class="info-card">
+                    <h5>作品描述</h5>
+                    <p>{{ software.description }}</p>
+                </div>
+
+                <!-- 系统要求 -->
+                {% if software.system_requirements %}
+                <div class="info-card">
+                    <h5>系统要求</h5>
+                    <p>{{ software.system_requirements }}</p>
+                </div>
+                {% endif %}
+
+                <!-- 更新日志 -->
+                {% if software.changelog %}
+                <div class="info-card">
+                    <h5>更新日志</h5>
+                    <p>{{ software.changelog }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- 右侧信息 -->
+            <div class="col-lg-6">
+                <!-- 软件分类和标签 -->
+                <div class="info-card">
+                    <h5>{{ site_settings.category_tags_title }}</h5>
+                    <div style="margin-bottom: 1rem;">
+                        <strong style="color: var(--text-primary);">分类：</strong>
+                        <span class="category-badge">{{ software.category }}</span>
+                    </div>
+                    {% if software.tags %}
+                    <div class="tags-container">
+                        <strong style="color: var(--text-primary);">标签：</strong><br>
+                        {% for tag in software.tags %}
+                            <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- 支持平台 -->
+                <div class="info-card">
+                    <h5>支持平台</h5>
+                    {% for platform in software.platforms %}
+                        <span class="platform-badge">
+                            <i class="fab fa-{{ platform.lower() }} me-1"></i>{{ platform }}
+                        </span>
+                    {% endfor %}
+                </div>
+
+                <!-- 发布信息 -->
+                <div class="info-card">
+                    <h5>发布信息</h5>
+                    <p><strong style="color: var(--text-primary);">发布时间：</strong>{{ software.created_at[:10] }}</p>
+                    <p><strong style="color: var(--text-primary);">更新时间：</strong>{{ software.updated_at[:10] }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 图片模态框 -->
+<div id="imageModal" class="image-modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeImageModal()">&times;</button>
+        <img id="modalImage" src="" alt="">
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // 图片模态框功能
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    // 点击模态框背景关闭
+    document.getElementById('imageModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeImageModal();
+        }
+    });
+
+    // ESC键关闭模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeImageModal();
+        }
+    });
+
+
+
+    // 更新当前图片索引
+    function updateCurrentImageIndex(imageSrc) {
+        images.forEach((img, index) => {
+            if (img.src.includes(imageSrc.split('/').pop())) {
+                currentImageIndex = index;
+            }
+        });
+    }
+
+    // 图片模态框功能
+    let currentImageIndex = 0;
+    let images = [];
+
+    // 图片放大函数
+    function openImageModal(imageSrc, caption) {
+        console.log('打开图片:', imageSrc); // 调试用
+        
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        
+        if (modal && modalImage) {
+            modalImage.src = imageSrc;
+            modalImage.alt = caption || '作品截图';
+            modal.classList.add('active');
+            modal.style.display = 'flex'; // 确保显示
+            document.body.style.overflow = 'hidden';
+            
+            // 更新当前图片索引
+            updateCurrentImageIndex(imageSrc);
+        } else {
+            console.error('模态框元素未找到');
+        }
+    }
+
+    // 关闭模态框
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        if (modal) {
+            modal.classList.remove('active');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // 更新当前图片索引
+    function updateCurrentImageIndex(imageSrc) {
+        images.forEach((img, index) => {
+            if (img.src.includes(imageSrc.split('/').pop())) {
+                currentImageIndex = index;
+            }
+        });
+    }
+
+    // 确保函数全局可用
+    window.openImageModal = openImageModal;
+    window.closeImageModal = closeImageModal;
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有图片
+        images = Array.from(document.querySelectorAll('[data-image-zoom]'));
+        console.log('找到图片数量:', images.length);
+
+        // 为每个图片添加点击事件
+        images.forEach((img, index) => {
+            img.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('点击图片:', this.src);
+                openImageModal(this.src, this.alt);
+            });
+            
+            // 设置鼠标样式
+            img.style.cursor = 'zoom-in';
+            
+            // 调试：添加边框确认图片可点击
+            img.style.border = '2px solid transparent';
+            img.addEventListener('mouseenter', function() {
+                this.style.border = '2px solid var(--accent-green)';
+            });
+            img.addEventListener('mouseleave', function() {
+                this.style.border = '2px solid transparent';
+            });
+        });
+
+        // 点击模态框背景关闭
+        const modal = document.getElementById('imageModal');
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeImageModal();
+                }
+            });
+        }
+
+        // 视频流式播放增强功能
+        const videoItems = document.querySelectorAll('.video-item');
+        
+        // 视频质量管理
+        let currentQuality = 'auto';
+        let videoInfo = null;
+        let qualityUrls = {};
+        
+        // 添加快速启动提示样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .video-start-hint {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0,0,0,0.8);
+                color: var(--accent-green);
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                font-size: 0.9rem;
+                z-index: 10;
+                display: none;
+                animation: pulse 1.5s infinite;
+            }
+            @keyframes pulse {
+                0%, 100% { opacity: 0.8; }
+                50% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        videoItems.forEach(function(videoItem) {
+            const video = videoItem.querySelector('video');
+            const overlay = videoItem.querySelector('.video-overlay');
+            
+            if (video && overlay) {
+                const videoContainer = video.closest('.video-item');
+                const loadingIndicator = document.getElementById('videoLoading');
+                const qualitySelector = document.getElementById('qualitySelector');
+                
+                // 优化视频预加载设置
+                video.preload = 'auto';
+                video.crossOrigin = 'anonymous';
+                
+                // 添加快速启动提示
+                const startHint = document.createElement('div');
+                startHint.className = 'video-start-hint';
+                startHint.innerHTML = '<i class="fas fa-bolt"></i> 视频正在快速加载中...';
+                videoContainer.appendChild(startHint);
+                
+                // 显示启动提示
+                function showStartHint() {
+                    startHint.style.display = 'block';
+                    setTimeout(() => {
+                        startHint.style.display = 'none';
+                    }, 3000);
+                }
+                
+                // 页面加载时显示提示
+                if (video.autoplay) {
+                    showStartHint();
+                }
+                
+                // 获取视频信息
+                async function fetchVideoInfo() {
+                    try {
+                        const response = await fetch(`/api/video/{{ software.id }}/info`);
+                        const data = await response.json();
+                        if (data.success) {
+                            videoInfo = data.video_info;
+                            qualityUrls = data.video_info.quality_urls;
+                            console.log('视频信息加载成功:', videoInfo);
+                            return true;
+                        }
+                    } catch (error) {
+                        console.error('获取视频信息失败:', error);
+                    }
+                    return false;
+                }
+                
+                // 切换视频质量
+                async function switchVideoQuality(quality) {
+                    if (!qualityUrls[quality]) {
+                        console.error('不支持的视频质量:', quality);
+                        return false;
+                    }
+                    
+                    const currentTime = video.currentTime;
+                    const wasPlaying = !video.paused;
+                    
+                    try {
+                        videoContainer.classList.add('loading');
+                        
+                        // 更新视频源
+                        video.src = qualityUrls[quality];
+                        video.load();
+                        
+                        // 等待视频加载
+                        await new Promise((resolve, reject) => {
+                            const onCanPlay = () => {
+                                video.removeEventListener('canplay', onCanPlay);
+                                video.removeEventListener('error', onError);
+                                resolve();
+                            };
+                            
+                            const onError = () => {
+                                video.removeEventListener('canplay', onCanPlay);
+                                video.removeEventListener('error', onError);
+                                reject(new Error('视频加载失败'));
+                            };
+                            
+                            video.addEventListener('canplay', onCanPlay);
+                            video.addEventListener('error', onError);
+                        });
+                        
+                        // 恢复播放位置
+                        video.currentTime = currentTime;
+                        
+                        if (wasPlaying) {
+                            await video.play();
+                        }
+                        
+                        currentQuality = quality;
+                        console.log('视频质量切换成功:', quality);
+                        return true;
+                        
+                    } catch (error) {
+                        console.error('视频质量切换失败:', error);
+                        return false;
+                    } finally {
+                        videoContainer.classList.remove('loading');
+                    }
+                }
+                
+                // 自适应质量选择
+                function getOptimalQuality() {
+                    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                    
+                    if (connection) {
+                        const effectiveType = connection.effectiveType;
+                        const downlink = connection.downlink;
+                        
+                        // 根据网络状况选择质量
+                        if (effectiveType === '4g' && downlink > 5) {
+                            return '720p';
+                        } else if (effectiveType === '3g' || (effectiveType === '4g' && downlink <= 5)) {
+                            return '480p';
+                        }
+                    }
+                    
+                    // 根据屏幕尺寸选择
+                    if (window.innerWidth <= 768) {
+                        return '480p';
+                    } else {
+                        return '720p';
+                    }
+                }
+                
+                // 创建缓冲进度条
+                const bufferProgress = document.createElement('div');
+                bufferProgress.className = 'video-buffer-progress';
+                videoContainer.appendChild(bufferProgress);
+                
+                // 点击覆盖层播放视频
+                overlay.addEventListener('click', function() {
+                    overlay.style.display = 'none';
+                    videoContainer.classList.add('loading');
+                    video.play().catch(e => {
+                        console.error('视频播放失败:', e);
+                        videoContainer.classList.remove('loading');
+                    });
+                });
+                
+                // 视频加载状态管理
+                video.addEventListener('loadstart', function() {
+                    videoContainer.classList.add('loading');
+                    console.log('开始加载视频流...');
+                });
+                
+                video.addEventListener('canplay', function() {
+                    videoContainer.classList.remove('loading');
+                    console.log('视频流加载完成，可以播放');
+                });
+                
+                video.addEventListener('waiting', function() {
+                    videoContainer.classList.add('loading');
+                    console.log('视频缓冲中...');
+                });
+                
+                video.addEventListener('canplaythrough', function() {
+                    videoContainer.classList.remove('loading');
+                    console.log('视频缓冲完成');
+                });
+                
+                // 缓冲进度更新
+                function updateBufferProgress() {
+                    if (video.buffered.length > 0) {
+                        const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+                        const duration = video.duration;
+                        if (duration > 0) {
+                            const bufferProgress = (bufferedEnd / duration) * 100;
+                            const progressBar = videoContainer.querySelector('.video-buffer-progress');
+                            if (progressBar) {
+                                progressBar.style.width = bufferProgress + '%';
+                            }
+                        }
+                    }
+                }
+                
+                video.addEventListener('progress', updateBufferProgress);
+                video.addEventListener('timeupdate', updateBufferProgress);
+                
+                // 错误处理和重试机制
+                let retryCount = 0;
+                const maxRetries = 3;
+                
+                video.addEventListener('error', async function(e) {
+                    console.error('视频加载错误:', e);
+                    videoContainer.classList.remove('loading');
+                    
+                    if (retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(`尝试重新加载视频 (${retryCount}/${maxRetries})`);
+                        
+                        // 尝试降级到较低质量
+                        if (currentQuality === '720p') {
+                            await switchVideoQuality('480p');
+                        } else if (currentQuality === '480p') {
+                            await switchVideoQuality('auto');
+                        } else {
+                            // 重新加载当前质量
+                            setTimeout(() => {
+                                video.load();
+                            }, 1000);
+                        }
+                    } else {
+                        // 显示错误提示
+                        const errorMsg = document.createElement('div');
+                        errorMsg.className = 'video-error';
+                        errorMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> 视频加载失败，请刷新页面重试';
+                        errorMsg.style.cssText = `
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background: rgba(255, 0, 0, 0.8);
+                            color: white;
+                            padding: 1rem;
+                            border-radius: 8px;
+                            z-index: 15;
+                        `;
+                        videoContainer.appendChild(errorMsg);
+                        
+                        setTimeout(() => {
+                            if (errorMsg.parentNode) {
+                                errorMsg.parentNode.removeChild(errorMsg);
+                            }
+                        }, 5000);
+                    }
+                });
+                
+                // 播放/暂停交互
+                video.addEventListener('pause', function() {
+                    overlay.style.display = 'flex';
+                    videoContainer.classList.remove('playing');
+                });
+                
+                video.addEventListener('play', function() {
+                    overlay.style.display = 'none';
+                    videoContainer.classList.add('playing');
+                });
+                
+                // 质量选择器功能
+                if (qualitySelector) {
+                    const qualityBtns = qualitySelector.querySelectorAll('.quality-btn');
+                    qualityBtns.forEach(btn => {
+                        btn.addEventListener('click', async function() {
+                            const quality = this.dataset.quality;
+                            
+                            if (quality === currentQuality) {
+                                return;
+                            }
+                            
+                            // 移除其他按钮的active状态
+                            qualityBtns.forEach(b => b.classList.remove('active'));
+                            // 添加当前按钮的active状态
+                            this.classList.add('active');
+                            
+                            // 执行质量切换
+                            const success = await switchVideoQuality(quality);
+                            if (!success) {
+                                // 切换失败，恢复之前的选择
+                                qualityBtns.forEach(b => {
+                                    b.classList.remove('active');
+                                    if (b.dataset.quality === currentQuality) {
+                                        b.classList.add('active');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+                
+                // 鼠标悬停显示质量选择器
+                videoContainer.addEventListener('mouseenter', function() {
+                    if (qualitySelector && video.readyState >= 2) {
+                        qualitySelector.style.display = 'flex';
+                    }
+                });
+                
+                videoContainer.addEventListener('mouseleave', function() {
+                    if (qualitySelector) {
+                        setTimeout(() => {
+                            if (!qualitySelector.matches(':hover')) {
+                                qualitySelector.style.display = 'none';
+                            }
+                        }, 300);
+                    }
+                });
+                
+                // 网络状况监控
+                if ('connection' in navigator) {
+                    navigator.connection.addEventListener('change', function() {
+                        console.log('网络状况变化:', navigator.connection.effectiveType);
+                        
+                        // 如果是自动模式，根据网络状况调整质量
+                        if (currentQuality === 'auto') {
+                            const optimalQuality = getOptimalQuality();
+                            if (optimalQuality !== currentQuality) {
+                                switchVideoQuality(optimalQuality);
+                            }
+                        }
+                    });
+                }
+                
+                // 初始化视频信息和质量
+                fetchVideoInfo().then(success => {
+                    if (success) {
+                        // 设置初始质量
+                        const initialQuality = getOptimalQuality();
+                        if (qualityUrls[initialQuality]) {
+                            switchVideoQuality(initialQuality);
+                            
+                            // 更新质量选择器状态
+                            if (qualitySelector) {
+                                const qualityBtns = qualitySelector.querySelectorAll('.quality-btn');
+                                qualityBtns.forEach(btn => {
+                                    btn.classList.remove('active');
+                                    if (btn.dataset.quality === initialQuality) {
+                                        btn.classList.add('active');
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        // ESC键关闭模态框
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+            
+            // 键盘导航
+            const modal = document.getElementById('imageModal');
+            if (modal && modal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                    currentImageIndex--;
+                    const img = images[currentImageIndex];
+                    openImageModal(img.src, img.alt);
+                } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+                    currentImageIndex++;
+                    const img = images[currentImageIndex];
+                    openImageModal(img.src, img.alt);
+                }
+            }
+        });
+    });
+
+    // 下载统计
+    document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            console.log('开始下载:', this.textContent.trim());
+        });
+    });
+
+    // 页面加载动画
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.stat-card, .info-card, .platform-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    });
+</script>
+{% endblock %}

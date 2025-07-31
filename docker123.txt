@@ -1,0 +1,33 @@
+docker run -d \
+  --name software-repo-web \
+  -p 9090:5000 \
+  -v /shumengya/docker/mengya-webrepo/data:/app/data \
+  -v /shumengya/docker/mengya-webrepo/static/downloads:/app/static/downloads \
+  -v /shumengya/docker/mengya-webrepo/static/uploads:/app/static/uploads \
+  -e PYTHONUNBUFFERED=1 \
+  -e LANG=C.UTF-8 \
+  -e LC_ALL=C.UTF-8 \
+  -e FLASK_ENV=production \
+  -e FLASK_APP=app.py \
+  --restart unless-stopped \
+  mengyarepo_software-repo:latest
+
+  
+mkdir -p data static/downloads static/uploads
+
+chmod -R 755 data static
+
+# 查看容器状态
+docker ps
+
+# 查看日志
+docker logs software-repo-web
+
+# 停止容器
+docker stop software-repo-web
+
+# 启动容器
+docker start software-repo-web
+
+# 删除容器
+docker rm software-repo-web
