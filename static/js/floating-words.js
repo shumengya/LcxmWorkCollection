@@ -2,46 +2,17 @@
 // 你可以在这里添加、删除或修改要显示的编程词汇
 
 const PROGRAMMING_WORDS = {
-    // 中文编程词汇
-    chinese: [
-    ],
-    
     // 英文编程关键词
     english: [
         "Python","Java","C++","C","JavaScript","HTML","CSS","SQL","Linux","Shell","Git","Docker","Kubernetes","Jenkins","CI/CD",
-        "Node.js","Redis","MySQL","MongoDB","PostgreSQL","SQLite","Oracle","SQLServer","Redis","MySQL","MongoDB","PostgreSQL","SQLite",
-        "PHP","Unity","Godot","Unreal","Blender","Photoshop","Maya","3DS Max","Blender","Photoshop",
-    ],
-    
-    // 编程语言关键字
-    keywords: [
-        'function', 'class', 'interface', 'abstract', 'extends', 'implements',
-        'public', 'private', 'protected', 'static', 'final', 'const',
-        'var', 'let', 'async', 'await', 'promise', 'callback',
-        'import', 'export', 'module', 'package', 'namespace', 'using',
-        'try', 'catch', 'throw', 'finally', 'exception', 'error',
-        'if', 'else', 'switch', 'case', 'for', 'while', 'do',
-        'break', 'continue', 'return', 'yield', 'new', 'delete'
-    ],
-    
-    // 常用函数和方法
-    functions: [
-        'getElementById()', 'querySelector()', 'addEventListener()', 'fetch()',
-        'setTimeout()', 'setInterval()', 'JSON.parse()', 'JSON.stringify()',
-        'map()', 'filter()', 'reduce()', 'forEach()', 'find()', 'includes()',
-        'push()', 'pop()', 'shift()', 'unshift()', 'slice()', 'splice()',
-        'split()', 'join()', 'replace()', 'substring()', 'indexOf()', 'charAt()',
-        'console.log()', 'Math.random()', 'Date.now()', 'parseInt()', 'parseFloat()',
-        'toString()', 'valueOf()', 'hasOwnProperty()', 'isArray()', 'typeof'
+        "Node.js","PostgreSQL","SQLite","SQLServer","Redis","MySQL","MongoDB","PostgreSQL","SQLite",
+        "PHP","Unity","Godot","Unreal","Blender","Photoshop","Maya","3DS Max","Blender",
     ]
 };
 
 // 词汇类型配置
 const WORD_TYPES = [
-    { type: 'chinese', className: 'chinese', weight: 0 },
-    { type: 'english', className: 'english', weight: 0.5},
-    { type: 'keywords', className: 'keyword', weight: 0.25 },
-    { type: 'functions', className: 'function', weight: 0.25 }
+    { type: 'english', className: 'english', weight: 1.0}
 ];
 
 // 生成随机词汇
@@ -62,12 +33,12 @@ function getRandomWord() {
         }
     }
     
-    // 默认返回中文词汇
-    const words = PROGRAMMING_WORDS.chinese;
+    // 默认返回英文词汇
+    const words = PROGRAMMING_WORDS.english;
     const randomIndex = Math.floor(Math.random() * words.length);
     return {
         text: words[randomIndex],
-        className: 'chinese'
+        className: 'english'
     };
 }
 
@@ -103,6 +74,31 @@ function createFloatingWord() {
     }, (delay + duration) * 1000);
 }
 
+// 检查设置并初始化漂浮词汇效果
+async function checkSettingsAndInit() {
+    try {
+        const response = await fetch('/static/data/settings.json');
+        const settings = await response.json();
+        
+        // 如果设置中关闭了漂浮词特效，则隐藏容器
+        if (settings['一键关闭漂浮词特效'] === true) {
+            console.log('漂浮词特效已被设置关闭');
+            const container = document.querySelector('.floating-words');
+            if (container) {
+                container.style.display = 'none';
+            }
+            return;
+        }
+        
+        // 启动漂浮词效果
+        initFloatingWords();
+    } catch (error) {
+        console.error('读取设置失败，使用默认配置:', error);
+        // 如果读取设置失败，默认启动特效
+        initFloatingWords();
+    }
+}
+
 // 初始化漂浮词汇效果
 function initFloatingWords() {
     // 立即创建一些词汇
@@ -119,5 +115,5 @@ function initFloatingWords() {
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
     // 延迟1秒开始，避免与页面加载冲突
-    setTimeout(initFloatingWords, 1000);
-}); 
+    setTimeout(checkSettingsAndInit, 1000);
+});

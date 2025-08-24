@@ -1111,8 +1111,24 @@
         });
         
         // 动态生成更多粒子
-        function createParticles() {
+        async function createParticles() {
+            try {
+                const response = await fetch('/static/data/settings.json');
+                const settings = await response.json();
+                
+                // 如果终端输出特效被关闭，则不创建粒子
+                if (settings['一键关闭终端输出特效'] === true) {
+                    return;
+                }
+            } catch (error) {
+                console.error('读取设置失败，继续创建粒子:', error);
+            }
+            
             const particlesContainer = document.querySelector('.particles');
+            if (!particlesContainer || particlesContainer.style.display === 'none') {
+                return;
+            }
+            
             const particleCount = 15;
             
             for (let i = 0; i < particleCount; i++) {

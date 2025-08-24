@@ -186,5 +186,35 @@ function initTerminalBackground() {
     });
 }
 
+// 检查设置并初始化终端背景
+async function checkSettingsAndInitTerminal() {
+    try {
+        const response = await fetch('/static/data/settings.json');
+        const settings = await response.json();
+        
+        // 如果设置中关闭了终端输出特效，则隐藏容器
+        if (settings['一键关闭终端输出特效'] === true) {
+            console.log('终端输出特效已关闭');
+            // 隐藏终端背景容器
+            const codeBackground = document.querySelector('.code-background');
+            if (codeBackground) {
+                codeBackground.style.display = 'none';
+            }
+            // 隐藏粒子效果容器
+            const particles = document.querySelector('.particles');
+            if (particles) {
+                particles.style.display = 'none';
+            }
+            return;
+        }
+        
+        console.log('终端输出特效已启用');
+        initTerminalBackground();
+    } catch (error) {
+        console.error('读取设置失败，使用默认配置:', error);
+        initTerminalBackground();
+    }
+}
+
 // 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', initTerminalBackground); 
+document.addEventListener('DOMContentLoaded', checkSettingsAndInitTerminal);

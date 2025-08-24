@@ -56,14 +56,16 @@ def init_data_files():
     if not os.path.exists(SETTINGS_FILE):
         # 默认网站设置
         default_settings = {
-            "site_name": "萌芽软件发布网",
-            "site_logo": "",
+            "site_name": "灵创作品集",
+            "brand_name": "灵创新媒",
+            "site_logo": "uploads/lcxm.jpg",
             "visit_count": 0,
-            "site_description": "为开发者和用户架起桥梁",
-            "site_slogan": "独乐乐不如众乐乐",
+            "site_description": "欢迎加入灵创新媒！",
+            "site_slogan": "灵感和创造，是实现梦想的翅膀",
             "icp_number": "蜀ICP备2025151694号",
-            "gallery_title": "作品截图",
+            "gallery_title": "作品展示",
             "category_tags_title": "分类与标签",
+            "featured_title": "精选作品",
             "updated_at": datetime.now().isoformat()
         }
         with open(SETTINGS_FILE, 'w', encoding='utf-8') as f:
@@ -95,13 +97,15 @@ def load_settings():
             return settings
     except:
         return {
-            "site_name": "萌芽软件发布网",
-            "site_logo": "",
-            "site_description": "为开发者和用户架起桥梁",
-            "site_slogan": "独乐乐不如众乐乐",
+            "site_name": "灵创作品集",
+            "brand_name": "灵创新媒",
+            "site_logo": "uploads/lcxm.jpg",
+            "site_description": "欢迎加入灵创新媒！",
+            "site_slogan": "灵感和创造，是实现梦想的翅膀",
             "icp_number": "蜀ICP备2025151694号",
-            "gallery_title": "作品截图",
+            "gallery_title": "作品展示",
             "category_tags_title": "分类与标签",
+            "featured_title": "精选作品",
             "visit_count": 0
         }
 
@@ -1914,6 +1918,15 @@ def api_check_update(software_id):
             'error': str(e),
             'code': 500
         }), 500
+
+@app.route('/static/data/settings.json')
+def get_settings_json():
+    """提供settings.json文件的API访问"""
+    try:
+        settings = load_settings()
+        return jsonify(settings)
+    except Exception as e:
+        return jsonify({"error": "Failed to load settings"}), 500
 
 @app.context_processor
 def inject_settings():

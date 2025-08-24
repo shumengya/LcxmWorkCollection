@@ -1,0 +1,951 @@
+[
+  {
+    "id": "f293b867-08e2-4cc1-a570-e0d0484b0c51",
+    "game_id": "dxFight",
+    "name": "dxFight",
+    "description": "dxFight游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/dxFight/image3.png",
+      "downloads/dxFight/image1.png",
+      "downloads/dxFight/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/dxFight/Windows/dxFight_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "29.60 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.759549",
+    "updated_at": "2025-07-31T18:50:22.760739",
+    "downloads": 0
+  },
+  {
+    "id": "19cdf9f3-d1c9-4315-abba-c541cc5ac4c2",
+    "game_id": "mengyafarm",
+    "name": "mengyafarm",
+    "description": "mengyafarm游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "Android"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/mengyafarm/image4.png",
+      "downloads/mengyafarm/image3.png",
+      "downloads/mengyafarm/image6.png",
+      "downloads/mengyafarm/image1.png",
+      "downloads/mengyafarm/image5.png",
+      "downloads/mengyafarm/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/mengyafarm/Windows/mengyafarm_windows.zip"
+      },
+      "Android": {
+        "local": "downloads/mengyafarm/Android/mengyafarm_android.apk"
+      }
+    },
+    "file_sizes": {
+      "Windows": "87.63 MB",
+      "Android": "84.97 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.762012",
+    "updated_at": "2025-07-31T18:50:22.762058",
+    "downloads": 0
+  },
+  {
+    "id": "ee6daf1c-58b3-48cd-8379-96c01059596b",
+    "game_id": "lwant2025",
+    "name": "lwant2025",
+    "description": "lwant2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "macOS",
+      "Linux",
+      "Android",
+      "iOS"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/lwant2025/image2.jpg",
+      "downloads/lwant2025/image1.jpg"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/lwant2025/Windows/lwant2025_windows.zip"
+      },
+      "macOS": {
+        "local": "downloads/lwant2025/macOS/lwant2025_macos.zip"
+      },
+      "Linux": {
+        "local": "downloads/lwant2025/Linux/lwant2025_linux.zip"
+      },
+      "Android": {
+        "local": "downloads/lwant2025/Android/lwant2025_android.zip"
+      },
+      "iOS": {
+        "local": "downloads/lwant2025/iOS/lwant2025_ios.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "7.48 MB",
+      "macOS": "7.48 MB",
+      "Linux": "7.48 MB",
+      "Android": "7.48 MB",
+      "iOS": "7.48 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.764072",
+    "updated_at": "2025-07-31T18:50:22.765114",
+    "downloads": 0
+  },
+  {
+    "id": "5496d2c1-dc8f-4858-8d5f-63a152d76ab7",
+    "game_id": "yinlvhuanshu",
+    "name": "yinlvhuanshu",
+    "description": "yinlvhuanshu游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/yinlvhuanshu/image4.png",
+      "downloads/yinlvhuanshu/image3.png",
+      "downloads/yinlvhuanshu/image1.png",
+      "downloads/yinlvhuanshu/image5.png",
+      "downloads/yinlvhuanshu/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/yinlvhuanshu/Windows/yinlvhuanshu_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "247.95 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.767239",
+    "updated_at": "2025-07-31T18:50:22.767285",
+    "downloads": 0,
+    "video": "downloads/yinlvhuanshu/video.mp4"
+  },
+  {
+    "id": "feac1f7b-6748-4708-982f-53094f986434",
+    "game_id": "emc",
+    "name": "emc",
+    "description": "emc游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/emc/image1.png",
+      "downloads/emc/image2.png"
+    ],
+    "download_links": {
+      "Windows": {}
+    },
+    "file_sizes": {
+      "Windows": "无本地文件"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.768797",
+    "updated_at": "2025-07-31T18:50:22.768844",
+    "downloads": 0
+  },
+  {
+    "id": "da56e289-5009-4209-b06e-86ade86b8330",
+    "game_id": "newrect",
+    "name": "newrect",
+    "description": "newrect游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/newrect/image4.png",
+      "downloads/newrect/image3.png",
+      "downloads/newrect/image6.png",
+      "downloads/newrect/image1.png",
+      "downloads/newrect/image5.png",
+      "downloads/newrect/image2.png"
+    ],
+    "download_links": {
+      "Windows": {}
+    },
+    "file_sizes": {
+      "Windows": "无本地文件"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.770339",
+    "updated_at": "2025-07-31T18:50:22.770385",
+    "downloads": 0,
+    "video": "downloads/newrect/video.mp4"
+  },
+  {
+    "id": "c244a5d7-b6ed-4426-9613-8b36bbe59531",
+    "game_id": "tiangong",
+    "name": "tiangong",
+    "description": "tiangong游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/tiangong/image4.png",
+      "downloads/tiangong/image3.png",
+      "downloads/tiangong/image1.png",
+      "downloads/tiangong/image5.png",
+      "downloads/tiangong/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/tiangong/Windows/tiangong_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "59.40 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.771501",
+    "updated_at": "2025-07-31T18:50:22.771541",
+    "downloads": 0
+  },
+  {
+    "id": "fa0d55fe-26ef-4156-aee7-613570d1669c",
+    "game_id": "ywy2025",
+    "name": "ywy2025",
+    "description": "ywy2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "Android",
+      "iOS"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/ywy2025/image4.png",
+      "downloads/ywy2025/image3.png",
+      "downloads/ywy2025/image8.png",
+      "downloads/ywy2025/image6.jpg",
+      "downloads/ywy2025/image7.png",
+      "downloads/ywy2025/image1.png",
+      "downloads/ywy2025/image9.png",
+      "downloads/ywy2025/image5.png",
+      "downloads/ywy2025/image10.png",
+      "downloads/ywy2025/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/ywy2025/Windows/ywy2025_windows.zip"
+      },
+      "Android": {
+        "local": "downloads/ywy2025/Android/ywy2025_android.zip"
+      },
+      "iOS": {
+        "local": "downloads/ywy2025/iOS/ywy2025_ios.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "38.10 MB",
+      "Android": "38.10 MB",
+      "iOS": "38.10 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.772792",
+    "updated_at": "2025-07-31T18:50:22.772828",
+    "downloads": 0,
+    "video": "downloads/ywy2025/video.mp4"
+  },
+  {
+    "id": "e9ad5ac9-33e0-4a93-afe7-e9bc84ee83f3",
+    "game_id": "lyxbubble",
+    "name": "lyxbubble",
+    "description": "lyxbubble游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/lyxbubble/image4.png",
+      "downloads/lyxbubble/image3.png",
+      "downloads/lyxbubble/image1.png",
+      "downloads/lyxbubble/image5.png",
+      "downloads/lyxbubble/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/lyxbubble/Windows/lyxbubble_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "50.96 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.774606",
+    "updated_at": "2025-07-31T18:50:22.774663",
+    "downloads": 0,
+    "video": "downloads/lyxbubble/video.mp4"
+  },
+  {
+    "id": "bed06d09-4c97-404d-9ef1-384627f89e56",
+    "game_id": "mml_ggj2025",
+    "name": "mml_ggj2025",
+    "description": "mml_ggj2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/mml_ggj2025/image4.png",
+      "downloads/mml_ggj2025/image3.png",
+      "downloads/mml_ggj2025/image1.jpg",
+      "downloads/mml_ggj2025/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/mml_ggj2025/Windows/mml_ggj2025_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "45.33 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.775951",
+    "updated_at": "2025-07-31T18:50:22.775985",
+    "downloads": 0,
+    "video": "downloads/mml_ggj2025/video.mp4"
+  },
+  {
+    "id": "42773544-1d64-4ff9-8556-207ae19a183b",
+    "game_id": "xklz2025",
+    "name": "xklz2025",
+    "description": "xklz2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "Android",
+      "iOS"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/xklz2025/image2.jpg",
+      "downloads/xklz2025/image5.jpg",
+      "downloads/xklz2025/image6.jpg",
+      "downloads/xklz2025/image3.jpg",
+      "downloads/xklz2025/image9.jpg",
+      "downloads/xklz2025/image10.jpg",
+      "downloads/xklz2025/image1.jpg",
+      "downloads/xklz2025/image8.jpg",
+      "downloads/xklz2025/image7.jpg",
+      "downloads/xklz2025/image4.jpg"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/xklz2025/Windows/xklz2025_windows.zip"
+      },
+      "Android": {
+        "local": "downloads/xklz2025/Android/xklz2025_android.zip"
+      },
+      "iOS": {
+        "local": "downloads/xklz2025/iOS/xklz2025_ios.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "16.41 MB",
+      "Android": "16.41 MB",
+      "iOS": "16.41 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.777608",
+    "updated_at": "2025-07-31T18:50:22.777654",
+    "downloads": 0
+  },
+  {
+    "id": "4ebf74c9-6a5e-4b62-961f-482fe41801ca",
+    "game_id": "BallAdventue",
+    "name": "BallAdventue",
+    "description": "BallAdventue游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/BallAdventue/Windows/BallAdventue_windows.exe"
+      }
+    },
+    "file_sizes": {
+      "Windows": "150.50 KB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.780880",
+    "updated_at": "2025-07-31T18:50:22.780966",
+    "downloads": 0
+  },
+  {
+    "id": "8c488738-7991-4a51-b7d3-8a3a8503d784",
+    "game_id": "mmaj2025",
+    "name": "mmaj2025",
+    "description": "mmaj2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "Android",
+      "iOS"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/mmaj2025/image4.png",
+      "downloads/mmaj2025/image3.png",
+      "downloads/mmaj2025/image8.png",
+      "downloads/mmaj2025/image7.png",
+      "downloads/mmaj2025/image6.png",
+      "downloads/mmaj2025/image1.png",
+      "downloads/mmaj2025/image9.png",
+      "downloads/mmaj2025/image5.png",
+      "downloads/mmaj2025/image10.png",
+      "downloads/mmaj2025/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/mmaj2025/Windows/mmaj2025_windows.zip"
+      },
+      "Android": {
+        "local": "downloads/mmaj2025/Android/mmaj2025_android.zip"
+      },
+      "iOS": {
+        "local": "downloads/mmaj2025/iOS/mmaj2025_ios.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "25.74 MB",
+      "Android": "25.74 MB",
+      "iOS": "25.74 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.782536",
+    "updated_at": "2025-07-31T18:50:22.782574",
+    "downloads": 0
+  },
+  {
+    "id": "dcb83e32-040c-449a-b1f2-0508a2388821",
+    "game_id": "huanpao",
+    "name": "huanpao",
+    "description": "huanpao游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/huanpao/image3.png",
+      "downloads/huanpao/image1.png",
+      "downloads/huanpao/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/huanpao/Windows/huanpao_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "51.89 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.784203",
+    "updated_at": "2025-07-31T18:50:22.784245",
+    "downloads": 0
+  },
+  {
+    "id": "2a123c1d-d313-4cf1-934a-11f2e9bcb2f3",
+    "game_id": "yinlvhuanshutool",
+    "name": "yinlvhuanshutool",
+    "description": "yinlvhuanshutool游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/yinlvhuanshutool/image4.png",
+      "downloads/yinlvhuanshutool/image3.png",
+      "downloads/yinlvhuanshutool/image1.png",
+      "downloads/yinlvhuanshutool/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/yinlvhuanshutool/Windows/yinlvhuanshutool_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "157.33 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.785476",
+    "updated_at": "2025-07-31T18:50:22.785514",
+    "downloads": 0
+  },
+  {
+    "id": "4657a32c-3104-4a88-863d-5723251b1623",
+    "game_id": "ceshi",
+    "name": "ceshi",
+    "description": "ceshi游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "macOS",
+      "Linux",
+      "Android",
+      "iOS"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/ceshi/image2.jpg",
+      "downloads/ceshi/image3.jpg",
+      "downloads/ceshi/image1.jpg"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/ceshi/Windows/ceshi_windows.zip"
+      },
+      "macOS": {
+        "local": "downloads/ceshi/macOS/ceshi_macos.zip"
+      },
+      "Linux": {
+        "local": "downloads/ceshi/Linux/ceshi_linux.zip"
+      },
+      "Android": {
+        "local": "downloads/ceshi/Android/ceshi_android.zip"
+      },
+      "iOS": {
+        "local": "downloads/ceshi/iOS/ceshi_ios.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "1.43 MB",
+      "macOS": "1.43 MB",
+      "Linux": "1.43 MB",
+      "Android": "1.43 MB",
+      "iOS": "1.43 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.786686",
+    "updated_at": "2025-07-31T18:50:22.786724",
+    "downloads": 0,
+    "video": "downloads/ceshi/video.mp4"
+  },
+  {
+    "id": "91206d7f-9e70-49af-b93f-c7ff35457169",
+    "game_id": "yhlv",
+    "name": "yhlv",
+    "description": "yhlv游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "Android",
+      "iOS"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/yhlv/image4.png",
+      "downloads/yhlv/image3.png",
+      "downloads/yhlv/image6.png",
+      "downloads/yhlv/image1.png",
+      "downloads/yhlv/image5.png",
+      "downloads/yhlv/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/yhlv/Windows/yhlv_windows.zip"
+      },
+      "Android": {
+        "local": "downloads/yhlv/Android/yhlv_android.zip"
+      },
+      "iOS": {
+        "local": "downloads/yhlv/iOS/yhlv_ios.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "93.01 MB",
+      "Android": "93.01 MB",
+      "iOS": "93.01 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.788194",
+    "updated_at": "2025-07-31T18:50:22.788230",
+    "downloads": 0,
+    "video": "downloads/yhlv/video.mp4"
+  },
+  {
+    "id": "02e5a304-34a1-4988-9f95-bf8eab57b7e6",
+    "game_id": "zlxh2025",
+    "name": "zlxh2025",
+    "description": "zlxh2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/zlxh2025/image2.jpg",
+      "downloads/zlxh2025/image5.jpg",
+      "downloads/zlxh2025/image6.jpg",
+      "downloads/zlxh2025/image3.jpg",
+      "downloads/zlxh2025/image9.jpg",
+      "downloads/zlxh2025/image10.jpg",
+      "downloads/zlxh2025/image1.jpg",
+      "downloads/zlxh2025/image8.jpg",
+      "downloads/zlxh2025/image7.jpg",
+      "downloads/zlxh2025/image4.jpg"
+    ],
+    "download_links": {
+      "Windows": {}
+    },
+    "file_sizes": {
+      "Windows": "无本地文件"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.790242",
+    "updated_at": "2025-07-31T18:50:22.790286",
+    "downloads": 0
+  },
+  {
+    "id": "47f2b966-acc2-4fef-b87a-8b918cc4cecd",
+    "game_id": "wsm2025",
+    "name": "wsm2025",
+    "description": "wsm2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "Android",
+      "iOS"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/wsm2025/image2.jpg",
+      "downloads/wsm2025/image3.jpg",
+      "downloads/wsm2025/image1.jpg",
+      "downloads/wsm2025/image4.jpg"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/wsm2025/Windows/wsm2025_windows.zip"
+      },
+      "Android": {
+        "local": "downloads/wsm2025/Android/wsm2025_android.zip"
+      },
+      "iOS": {
+        "local": "downloads/wsm2025/iOS/wsm2025_ios.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "46.77 MB",
+      "Android": "46.77 MB",
+      "iOS": "46.77 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.791513",
+    "updated_at": "2025-07-31T18:50:22.791561",
+    "downloads": 0
+  },
+  {
+    "id": "b2ec0639-ddef-44ae-9c2b-0b84e40802d1",
+    "game_id": "oldrect1",
+    "name": "oldrect1",
+    "description": "oldrect1游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/oldrect1/image4.png",
+      "downloads/oldrect1/image3.png",
+      "downloads/oldrect1/image1.png",
+      "downloads/oldrect1/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/oldrect1/Windows/oldrect1_windows.exe"
+      }
+    },
+    "file_sizes": {
+      "Windows": "36.23 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.794359",
+    "updated_at": "2025-07-31T18:50:22.794401",
+    "downloads": 0,
+    "video": "downloads/oldrect1/video.mp4"
+  },
+  {
+    "id": "8ccdcd61-4bc0-47ee-8133-279a03da67b5",
+    "game_id": "mml_cgj2025",
+    "name": "mml_cgj2025",
+    "description": "mml_cgj2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/mml_cgj2025/image4.png",
+      "downloads/mml_cgj2025/image3.png",
+      "downloads/mml_cgj2025/image1.png",
+      "downloads/mml_cgj2025/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/mml_cgj2025/Windows/mml_cgj2025_windows.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "66.36 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.795646",
+    "updated_at": "2025-07-31T18:50:22.795682",
+    "downloads": 0,
+    "video": "downloads/mml_cgj2025/video.mp4"
+  },
+  {
+    "id": "ec329846-ad6c-4337-9d66-27a342301ba3",
+    "game_id": "pixelodyssey",
+    "name": "pixelodyssey",
+    "description": "pixelodyssey游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/pixelodyssey/image4.png",
+      "downloads/pixelodyssey/image3.png",
+      "downloads/pixelodyssey/image6.png",
+      "downloads/pixelodyssey/image1.png",
+      "downloads/pixelodyssey/image5.png",
+      "downloads/pixelodyssey/image2.png"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/pixelodyssey/Windows/pixelodyssey_windows.exe"
+      }
+    },
+    "file_sizes": {
+      "Windows": "99.81 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.796997",
+    "updated_at": "2025-07-31T18:50:22.797030",
+    "downloads": 0
+  },
+  {
+    "id": "1bff0a72-38bf-4ff6-ad11-1a43a6e8d4bd",
+    "game_id": "sugar",
+    "name": "sugar",
+    "description": "sugar游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/sugar/image2.jpg",
+      "downloads/sugar/image3.png",
+      "downloads/sugar/image5.jpg",
+      "downloads/sugar/image6.jpg",
+      "downloads/sugar/image1.png",
+      "downloads/sugar/image8.jpg",
+      "downloads/sugar/image7.jpg",
+      "downloads/sugar/image4.jpg"
+    ],
+    "download_links": {
+      "Windows": {}
+    },
+    "file_sizes": {
+      "Windows": "无本地文件"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.798344",
+    "updated_at": "2025-07-31T18:50:22.798386",
+    "downloads": 0,
+    "video": "downloads/sugar/video.mp4"
+  },
+  {
+    "id": "8d7ba16d-1237-4dc1-b1c9-a227e8a37fb3",
+    "game_id": "jl2025",
+    "name": "jl2025",
+    "description": "jl2025游戏描述",
+    "version": "1.0.0",
+    "developer": "开发者名称",
+    "category": "游戏",
+    "platforms": [
+      "Windows",
+      "Android"
+    ],
+    "tags": [
+      "游戏"
+    ],
+    "images": [
+      "downloads/jl2025/image2.jpg",
+      "downloads/jl2025/image5.jpg",
+      "downloads/jl2025/image6.jpg",
+      "downloads/jl2025/image3.jpg",
+      "downloads/jl2025/image1.jpg",
+      "downloads/jl2025/image8.jpg",
+      "downloads/jl2025/image7.jpg",
+      "downloads/jl2025/image4.jpg"
+    ],
+    "download_links": {
+      "Windows": {
+        "local": "downloads/jl2025/Windows/jl2025_windows.zip"
+      },
+      "Android": {
+        "local": "downloads/jl2025/Android/jl2025_android.zip"
+      }
+    },
+    "file_sizes": {
+      "Windows": "130.32 MB",
+      "Android": "130.32 MB"
+    },
+    "system_requirements": "性能要好一点",
+    "download_disabled": false,
+    "created_at": "2025-07-31T18:50:22.799593",
+    "updated_at": "2025-07-31T18:50:22.799622",
+    "downloads": 0
+  }
+]
